@@ -75,7 +75,7 @@ public class DottedCircles {
 			}
 		}
 
-		if (Math.random() * 10000 < width + height) {
+		if (Math.random() < 0.1) {
 			circles.add(new Circle(offset, width, height));
 		}
 	}
