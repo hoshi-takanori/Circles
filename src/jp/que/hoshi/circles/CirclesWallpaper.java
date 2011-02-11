@@ -3,6 +3,7 @@ package jp.que.hoshi.circles;
 import android.graphics.Canvas;
 import android.os.Handler;
 import android.service.wallpaper.WallpaperService;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
 public class CirclesWallpaper extends WallpaperService {
@@ -23,6 +24,15 @@ public class CirclesWallpaper extends WallpaperService {
 		};
 
 		private boolean mVisible = false;
+
+		private long tapTime;
+		private float tapX;
+		private float tapY;
+
+		public void onCreate (SurfaceHolder holder) {
+			super.onCreate(holder);
+			setTouchEventsEnabled(true);
+		}
 
 		public void onDestroy() {
 			super.onDestroy();
@@ -52,6 +62,19 @@ public class CirclesWallpaper extends WallpaperService {
 				if (mVisible) {
 					drawFrame();
 				}
+			}
+		}
+
+		public void onTouchEvent(MotionEvent event) {
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				tapTime = event.getEventTime();
+				tapX = event.getX();
+				tapY = event.getY();
+			} else if (event.getAction() == MotionEvent.ACTION_UP &&
+					event.getEventTime() - tapTime < 250 &&
+					Math.abs(event.getX() - tapX) < 4 &&
+					Math.abs(event.getY() - tapY) < 4) {
+				circles.add(tapX, tapY);
 			}
 		}
 

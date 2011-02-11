@@ -16,13 +16,19 @@ class Circle {
 	float hue;
 	int size;
 
-	public Circle(int offset, int width, int height) {
+	public Circle(int offset, float x, float y) {
 		this.offset = offset;
-		x = (float) (Math.random() * width);
-		y = (float) (Math.random() * height);
+		this.x = x;
+		this.y = y;
 		rad = (float) (Math.random() * Math.PI / 6);
 		hue = (float) (Math.random() * 360);
 		size = 0;
+	}
+
+	public static Circle create(int offset, int width, int height) {
+		float x = (float) (Math.random() * width);
+		float y = (float) (Math.random() * height);
+		return new Circle(offset, x, y);
 	}
 }
 
@@ -66,6 +72,10 @@ public class DottedCircles {
 		this.offset = offset;
 	}
 
+	public void add(float x, float y) {
+		circles.add(new Circle(offset, x, y));
+	}
+
 	public void tick() {
 		for (int i = circles.size(); --i >= 0; ) {
 			Circle circle = circles.get(i);
@@ -76,7 +86,7 @@ public class DottedCircles {
 		}
 
 		if (Math.random() < 0.1) {
-			circles.add(new Circle(offset, width, height));
+			circles.add(Circle.create(offset, width, height));
 		}
 	}
 
